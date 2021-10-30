@@ -20,6 +20,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "description": "'"${desc}"'"
 }')
 
+
 if [ "$responseStatus" -eq 200 ]
 then
   echo "Task created successfully"
