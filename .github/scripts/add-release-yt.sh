@@ -6,7 +6,7 @@ log=`git log $PREVIOUS_TAG_NAME`
 
 summary="Test issue ${lastTag}"
 desc="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
-getTaskReqUrl="https://api.tracker.yandex.net/v2/issues/_search"
+unique = "Test req 1"
 createTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
 updateTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
 
@@ -19,6 +19,7 @@ response=$(curl --write-out '%{http_code}' --silent --output /dev/null --locatio
     "summary": "'"${summary}"'",
     "type": "task",
     "description": "'"${desc}"'",
+    "unique": "Test req 1"
 }')
 
 if [ "$req" -ne 201 ]
