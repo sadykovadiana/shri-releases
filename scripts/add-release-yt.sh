@@ -11,9 +11,8 @@ description="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
 taskURL="https://api.tracker.yandex.net/v2/issues/"
 
 responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${taskURL} \
---header "Host: https://api.tracker.yandex.net" \
---header "Authorization: OAuth ${OAuth}" \
---header "X-Org-ID: ${OrganizationId}" \
+--header "Authorization: OAuth 517d7555b99e47f2b594e37385a1e981" \
+--header "X-Org-ID: 6461097" \
 --header "Content-Type: application/json" \
 --data-raw '{
     "queue": "TMP",
