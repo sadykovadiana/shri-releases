@@ -6,7 +6,7 @@ log=`git log $previous_tag`
 
 summary="Test issue ${lastTag}"
 desc="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
-unique="Test estasie/${lastTag}"
+unique= "Test estasie/${lastTag}"
 createTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
 
 responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createTaskReqUrl} \
@@ -17,8 +17,14 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "queue": "TMP",
     "summary": "'"${summary}"'",
     "type": "task",
-    "description": "'"${desc}"'",
-    "unique": "'"${unique}"'"
+    "description": "'"${desc}"'"
 }')
 
-echo ${responseStatus}
+if ["$responseStatus" -eq 200 ]
+then
+  echo "Task created successfully"
+  exit 0
+else
+  echo "Faced error $responseStatus"
+  exit 1
+fi
