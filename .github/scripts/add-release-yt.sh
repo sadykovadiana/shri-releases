@@ -6,8 +6,8 @@ log=`git log $previous_tag`
 
 summary="Test issue ${lastTag}"
 desc="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
+unique="Test estasie/${lastTag}"
 createTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
-updateTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
 
 responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createTaskReqUrl} \
 --header "Authorization: OAuth ${OAuth}" \
@@ -18,12 +18,13 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "summary": "'"${summary}"'",
     "type": "task",
     "description": "'"${desc}"'",
+    "unique": "'"${unique}"'"
 }')
 
-if [ "$responseStatus" -ne 201 ]
+if [ "$responseStatus" == "201" ]
 then
-    echo "Task had been created"
-    exit 0
+    echo "ERROR"
+    exit 1
 else
-    echo "ERROR :("
+    echo "Task had been created!"
 fi
