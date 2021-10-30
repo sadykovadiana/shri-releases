@@ -1,8 +1,8 @@
 cur_tag=$(git tag | tail -1 | head -n1)
 previous_tag=$(git tag | tail -2 | head -n1)
-cur_tag_author=$(git show $CURRENT_TAG_NAME --no-patch)
-cur_tag_date=$(git show $CURRENT_TAG_NAME --no-patch)
-log=`git log $PREVIOUS_TAG_NAME`
+cur_tag_author=$(git show $cur_tag --no-patch)
+cur_tag_date=$(git show $cur_tag --no-patch)
+log=`git log $previous_tag`
 
 summary="Test issue ${lastTag}"
 desc="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
