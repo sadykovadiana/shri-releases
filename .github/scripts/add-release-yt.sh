@@ -28,3 +28,4 @@ then
     exit 0
 else
     echo "ERROR :("
+fi
