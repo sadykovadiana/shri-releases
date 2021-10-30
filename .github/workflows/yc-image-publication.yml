@@ -1,0 +1,50 @@
+name: Push To Yandex Cloud CR
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+  
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Yandex Cloud CR "Login" Action for GitHub Actions
+        uses: yc-actions/yc-cr-login@v0.1-alpha
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY:  crpkfekkuqkb0u9l7j1b
+          CR_REPOSITORY: yc-cr-github-action
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          
+      - name: Deploy Serverless Container
+        id: deploy-sls-container
+        uses: yc-actions/yc-sls-container-deploy@v1
+        env:
+          CR_REGISTRY: crpkfekkuqkb0u9l7j1b
+          CR_REPOSITORY: shri-reliases
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          container-name: yc-action-demo
+          folder-id: ${{ secrets.FOLDER_ID }}
+          revision-service-account-id: ${{ secrets.SA_ID }}
+          revision-cores: 1
+          revision-memory: 512Mb
+          revision-core-fraction: 100
+          revision-concurrency: 8
+          revision-image-url: cr.yandex/${{ env.CR_REGISTRY }}/${{ env.CR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          revision-execution-timeout: 10
