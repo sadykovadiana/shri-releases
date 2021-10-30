@@ -7,9 +7,9 @@ log=`git log $previous_tag`
 
 summary="Test issue ${cur_tag}"
 desc="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
-createTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
+taskURL="https://api.tracker.yandex.net/v2/issues/"
 
-responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createTaskReqUrl} \
+responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${taskURL} \
 --header "Authorization: OAuth ${OAuth}" \
 --header "X-Org-Id: ${OrganizationId}" \
 --header "Content-Type: application/json" \
@@ -17,7 +17,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "queue": "TMP",
     "summary": "'"${summary}"'",
     "type": "task",
-    "description": "'"${desc}"'"
+    "description": "'"${desc}"'",
 }')
 
 
@@ -27,6 +27,6 @@ then
   echo "Task created successfully"
   exit 0
 else
-  echo "Faced error $responseStatus $OAuth"
+  echo "Faced error $responseStatus"
   exit 1
 fi
