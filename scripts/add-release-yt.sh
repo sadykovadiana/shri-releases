@@ -6,7 +6,7 @@ cur_tag_author=$(git show ${cur_tag} | grep Author: )
 cur_tag_date=$(git show ${cur_tag} | grep Date:)
 log=`git log $previous_tag`
 
-summary="Test issue ${cur_tag}"
+summary="Version release'"${cur_tag}"'"
 description="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
 taskURL="https://api.tracker.yandex.net/v2/issues/"
 
@@ -18,7 +18,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "queue": "TMP",
     "summary": "'"${summary}"'",
     "type": "task",
-    "description": "${description}"
+    "description": "'"${description}"'"
 }')
 
 
