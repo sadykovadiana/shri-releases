@@ -27,6 +27,6 @@ then
   echo "Task created successfully"
   exit 0
 else
-  echo "Faced error $responseStatus"
+  echo "Faced error $responseStatus $OAuth"
   exit 1
 fi
