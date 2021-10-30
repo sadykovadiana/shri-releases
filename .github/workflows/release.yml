@@ -13,5 +13,5 @@ jobs:
       - name: Create ticket
         run: sh ./scripts/add-release-yt.sh
         env:
-          OAuth: ${{ secrets.YCAUTH }}
-          OrganizationId: ${{ secrets.YCID }}
+          OAuth: ${{ secrets.OAuth }}
+          OrganizationId: ${{ secrets.OrganizationId }}
