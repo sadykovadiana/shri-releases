@@ -15,10 +15,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
 --header "X-Org-ID: ${OrganizationId}" \
 --header "Content-Type: application/json" \
 --data-raw '{
-    "queue": "TMP",
-    "summary": "'"${summary}"'",
-    "type": "task",
-    "description": "'"${description}"'"
+    Some text
 }')
 
 
