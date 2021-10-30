@@ -18,7 +18,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "queue": "TMP",
     "summary": "'"${summary}"'",
     "type": "task",
-    "description": "'"${description}"'"
+    "description": "desc"
 }')
 
 
