@@ -21,7 +21,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "unique": "'"${unique}"'"
 }')
 
-if [ "$responseStatus" == "201" ]
+if [ "$responseStatus" -eq 201 ]
 then
     echo "ERROR"
     exit 1
