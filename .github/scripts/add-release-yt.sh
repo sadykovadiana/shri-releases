@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cur_tag=$(git tag | sort -r | head -1)
 previous_tag=$(git tag | sort -r | head -2 | tail -1)
 cur_tag_author=$(git show ${cur_tag} | grep Author: )
