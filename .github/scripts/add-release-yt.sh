@@ -21,4 +21,4 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "unique": "'"${unique}"'"
 }')
 
-echo responseStatus
+echo ${responseStatus}
