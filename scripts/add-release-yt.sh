@@ -16,9 +16,9 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
 --header "Content-Type: application/json" \
 --data-raw '{
     "queue": "TMP",
-    "summary": "Some text",
+    "summary": " ' "${summary}" ' ",
     "type": "task",
-    "description": "Some description"
+    "description": " ' "${description}" ' "
 }')
 
 
