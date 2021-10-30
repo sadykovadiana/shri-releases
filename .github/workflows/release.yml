@@ -11,7 +11,7 @@ jobs:
         run: sudo apt-get install -y jq
 
       - name: Create ticket
-        run: sh ./.github/scripts/add-release-yt.sh
+        run: bash ./.github/scripts/add-release-yt.sh
         env:
           OAuth: ${{ secrets.YCAUTH }}
           OrganizationId: ${{ secrets.YCID }}
