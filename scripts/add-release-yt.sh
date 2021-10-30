@@ -16,14 +16,14 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
 --header "Content-Type: application/json" \
 --data-raw '{
     "queue": "TMP",
-    "summary": " ' "${summary}" ' ",
+    "summary": "${summary}",
     "type": "task",
-    "description": " ' "${description}" ' "
+    "description": "${description}"
 }')
 
 
 
- if [ "$responseStatus" -ne 200 ]
+ if [ "$responseStatus" -ne 201 ]
     then
         echo "ERROR: ${responseStatus}"
         exit 1
