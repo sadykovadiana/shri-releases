@@ -22,10 +22,6 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
 }')
 
 
-
-
-
-
  if [ "$responseStatus" -ne 200 ]
     then
         echo "ERROR: ${responseStatus}"
