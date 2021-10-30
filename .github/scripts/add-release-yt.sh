@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/bash
 
 cur_tag=$(git tag | sort -r | head -1)
 previous_tag=$(git tag | sort -r | head -2 | tail -1)
