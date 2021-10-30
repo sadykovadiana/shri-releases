@@ -21,11 +21,4 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "unique": "'"${unique}"'"
 }')
 
-if [ "$responseStatus" -eq 201 ]
-then
-    echo "Task had been created!"
-    exit 0
-else
-    echo "ERROR"
-    exit 1
-fi
+echo responseStatus

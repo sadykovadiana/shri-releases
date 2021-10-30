@@ -10,9 +10,6 @@ jobs:
       - name: Install jq
         run: sudo apt-get install -y jq
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Create ticket
         run: sh ./.github/scripts/add-release-yt.sh
         env:
