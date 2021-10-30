@@ -12,7 +12,7 @@ taskURL="https://api.tracker.yandex.net/v2/issues/"
 
 responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${taskURL} \
 --header "Authorization: OAuth 517d7555b99e47f2b594e37385a1e981" \
---header "X-Org-ID: 6461097" \
+--header "X-Org-ID: 2f02ae483b1140c899d0f51a8ac02402" \
 --header "Content-Type: application/json" \
 --data-raw '{
     "queue": "TMP",
