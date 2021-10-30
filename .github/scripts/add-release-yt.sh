@@ -24,9 +24,7 @@ response=$(curl --write-out '%{http_code}' --silent --output /dev/null --locatio
 
 if [ "$req" -ne 201 ]
 then
-    echo "ERROR: Cannot create release task"
-    exit 1
-else
-    echo "Task had been created ^_^"
+    echo "Task had been created"
     exit 0
-fi
+else
+    echo "ERROR :("

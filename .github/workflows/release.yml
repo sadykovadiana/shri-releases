@@ -1,9 +1,6 @@
 name: Create release in tracker
-on:
-  push:
-    tags:
-      - v1.*
-  workflow_dispatch:
+on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
