@@ -1,3 +1,4 @@
+#!/bin/bash
 cur_tag=$(git tag | tail -1 | head -n1)
 previous_tag=$(git tag | tail -2 | head -n1)
 cur_tag_author=$(git show $cur_tag --no-patch)
