@@ -12,7 +12,7 @@ createTaskReqUrl="https://api.tracker.yandex.net/v2/issues/"
 responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createTaskReqUrl} \
 --header "Authorization: OAuth ${OAuth}" \
 --header "X-Org-Id: ${OrganizationId}" \
---header 'Content-Type: application/json' \
+--header "Content-Type: application/json" \
 --data-raw '{
     "queue": "TMP",
     "summary": "'"${summary}"'",
