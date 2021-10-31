@@ -23,47 +23,61 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "description": "'"${desc}"'",
     "unique": "'"${taskID}"'"
 }')
-if [ "$responseStatus" -eq 409 ]
-    then
-        echo "Cannot create task with the same release version"
-        echo "Adding new comment then"
-        searchURL="https://api.tracker.yandex.net/v2/issues/_search"
-        getIssueId=$(curl --silent --location --request POST ${searchURL} \
-           --header "Authorization: OAuth ${OAuth}" \
-           --header "X-Org-Id: ${OrganizationId}" \
-           --header "Content-Type: application/json" \
-           --data-raw '{
+
+taskIDREQUEST=$(curl --silent --location --request POST ${taskURL} \
+   --header "Authorization: OAuth ${OAuth}" \
+--header "X-Org-Id: ${OrganizationId}" \
+--header "Content-Type: application/json" \
+    --data-raw '{
         "filter": {
             "unique": "'"${taskID}"'"
         }
     }' | jq -r '.[0].key'
 )
-
-        echo "Issue id: $getIssueId"
-        commentURL="https://api.tracker.yandex.net/v2/issues/$getIssueId/comments"
-        addComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${commentURL} \
+if [ "$responseStatus" -eq 409 ]
+then
+    echo "Duplicated tasks"
+    getStatusReq=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request PATCH "${taskURL}${taskIDREQUEST}"\
         --header "Authorization: OAuth ${OAuth}" \
-        --header "X-Org-Id: ${OrganisationID}" \
+        --header "X-Org-Id: ${OrganizationId}" \
         --header "Content-Type: application/json" \
         --data-raw '{
-                     "text": "Some test text for commitf",
-        }')
+            "summary": "'"${summary}"'",
+            "description": "'"${desc}"'"
+        }'
+    )
 
-        echo "Add comment with status $addComment"
-
-        if [ "$addComment" -eq 201 ]
-          then
-            echo "SUCCESS: New comment added"
-          else
-            echo "ERROR: Cannot add comment, ended with error $addComment"
-            exit 1
-        fi
-fi
-if [ "$responseStatus" -ne 201 ]
+    if [ "$getStatusReq" -ne 200 ]
     then
-        echo "ERROR: ${responseStatus}"
+        echo "Cannot update task"
         exit 1
     else
-        echo "Task added"
-        echo "$responseStatus, $previous_tag"
+        echo "Task updated"
+    fi
+
+elif [ "$createStatusCode" -ne 201 ]
+then
+    echo "Cannot create task"
+    exit 1
+else
+    echo "New release task created"
+fi
+
+newCommentURL="https://api.tracker.yandex.net/v2/issues/${taskIDREQUEST}/comments"
+
+createNewCommentReq=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST "${newCommentURL}" \
+        --header "Authorization: OAuth ${OAuth}" \
+        --header "X-Org-Id: ${OrganizationId}" \
+        --header "Content-Type: application/json" \
+         --data-raw '{
+            "text": "'"${log}"'",
+        }'
+)
+
+if [ "$createNewCommentReq" -ne 201 ]
+then
+    echo "Cannot create new comment"
+    exit 1
+else
+    echo "Comment had been created in ${taskIDREQUEST}"
 fi
