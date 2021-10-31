@@ -59,10 +59,8 @@ elif [ $responseStatus = 409 ]; then
       echo "Task updated"
     elif [ $updateTask -eq 404 ]; then
       echo "Task not found :("
-      exit 1
     else [ $updateTask -eq 409 ]
       echo "Checkout your request request"
-      exit 1
     fi
   else
     echo "ERROR: $updateTask"
