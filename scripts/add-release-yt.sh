@@ -56,6 +56,7 @@ if [ "$responseStatus" -eq 409 ]
             exit 1
         fi
 
+
 elif [ "$responseStatus" -ne 201 ]
     then
         echo "ERROR: ${responseStatus}"
