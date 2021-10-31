@@ -65,3 +65,4 @@ then
         echo "SUCCSESS: ${taskKey} UPDATED"
     fi
 
+fi
