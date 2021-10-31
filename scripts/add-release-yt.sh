@@ -35,6 +35,7 @@ elif [ $responseStatus = 409 ]; then
   headerAuth="Authorization: OAuth ${OAuth}"
   headerOrgID="X-Org-Id: ${OrganizationId}"
   contentType="Content-Type: application/json"
+  findExistingTask="https://api.tracker.yandex.net/v2/issues/_search"
   findTaskID=$(curl --silent --location --request POST ${findExistingTask} \
         --header "${headerAuth}" \
         --header "${headerOrgID}" \
