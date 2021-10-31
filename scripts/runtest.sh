@@ -3,6 +3,7 @@
 cur_tag=$(git tag | tail -1 | head -n1)
 taskID="estasie/$cur_tag"
 
+echo "$cur_tag"
 
 testResult=$(npx jest 2>&1 |  tr "\r\n" " " )
 
@@ -15,7 +16,7 @@ testResult=$(npx jest 2>&1 |  tr "\r\n" " " )
     --header "X-Org-Id: $OrganisationID" \
     --data-raw '{
     "filter": {
-         "unique":"'"$taskID"'"
+         "unique": "'$taskID'"
       }
     }' | jq -r '.[].id'
   )
