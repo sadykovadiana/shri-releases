@@ -1,8 +1,11 @@
 name: Create release in tracker
 
-on: [push]
+on:
+  push:
+    tags:
+      - '*'
 jobs:
-  create-ticket:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
