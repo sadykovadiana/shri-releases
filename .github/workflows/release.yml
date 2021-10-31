@@ -1,8 +1,6 @@
 name: Create release in tracker
 
-on:
-  release:
-    types: [created]
+on: [push]
 jobs:
   create-ticket:
     runs-on: ubuntu-latest
