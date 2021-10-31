@@ -1,13 +1,13 @@
 #! /usr/bin/bash
 
-cur_tag=$(git tag | sort -r | head -1)
-previous_tag=$(git tag | sort -r | head -2 | tail -1)
-cur_tag_author=$(git show ${cur_tag} | grep Author: )
+cur_tag=$(git tag | tail -1)
+previous_tag=$(git tag | tail -2 | head -1)
+cur_tag_author=$(git show $currentTag  --pretty=format:"Author: %an" --date=format:'%Y-%m-%d %H:%M:%S' --no-patch)
 cur_tag_date=$(git show ${cur_tag} | grep Date:)
 log=`git log $previous_tag`
-desc=$(git log --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n" " ")
+desc=$(git log --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n")
 
-summary="Version release'"${cur_tag}"'"
+summary="$cur_tag: Estasie App update"
 description="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
 taskURL="https://api.tracker.yandex.net/v2/issues/"
 
@@ -21,6 +21,8 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "type": "task",
     "description": "'"${desc}"'"
 }')
+
+
 
 
 
