@@ -24,6 +24,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "unique": "'"${taskID}"'"
 }')
 
+
 if [ "$responseStatus" -eq 409 ]
     then
         echo "Cannot create task with the same release version"
