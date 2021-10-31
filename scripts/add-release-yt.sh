@@ -1,8 +1,8 @@
 #! /usr/bin/bash
 
-cur_tag=$(git tag | tail -1)
-previous_tag=$(git tag | tail -2 | head -1)
-cur_tag_author=$(git show $currentTag  --pretty=format:"Author: %an" --date=format:'%Y-%m-%d %H:%M:%S' --no-patch)
+cur_tag=$(git tag | tail -1 | head -n1)
+previous_tag=$(git tag | tail -2 | head -n1)
+cur_tag_author=$(git show $cur_tag  --pretty=format:"Author: %an" --date=format:'%Y-%m-%d %H:%M:%S' --no-patch)
 cur_tag_date=$(git show ${cur_tag} | grep Date:)
 log=`git log $previous_tag`
 desc=$(git log --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n")
