@@ -25,43 +25,43 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
 }')
 
 
-if [ "$responseStatus" -eq 409 ]
-    then
-        echo "Cannot create task with the same release version"
-        echo "Adding new comment then"
-        searchURL="https://api.tracker.yandex.net/v2/issues/_search"
-        getIssueId=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${searchURL} \
-        --header "Authorization: OAuth ${OAuth}" \
-        --header "X-Org-Id: ${OrganisationID}" \
-        --header "Content-Type: application/json" \
-        --data-raw '{
-                      "filter": {
-                        "unique": "'${taskID}'"
-                      },
-        }')
-        echo "$getIssueId"
-        commentURL="https://api.tracker.yandex.net/v2/issues/${getIssueId}/comments"
-        addComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${searchURL} \
-        --header "Authorization: OAuth ${OAuth}" \
-        --header "X-Org-Id: ${OrganisationID}" \
-        --header "Content-Type: application/json" \
-        --data-raw '{
-            "text": "'${log}, ${desc}'"
-        }')
-        if [ "$addComment" -eq 201]
-          then
-            echo "SUCCESS: New comment added"
-          else
-            echo "ERROR: Cannot add comment, ended with error $addComment"
-            exit 1
-        fi
+if [ $responseStatus = 201 ]; then
+  echo "Release created successfully"
+elif [ $responseStatus = 404 ]; then
+  echo "Not found"
+elif [ $responseStatus = 409 ]; then
+   echo "Cannot create task with the same release version"
+   echo "Adding new comment then"
 
+  findTaskID=$(curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
+    --header "Content-Type: application/json" \
+    --header "Authorization: OAuth $OAuth" \
+    --header "X-Org-Id: $XOrgId" \
+    --data-raw '{
+    "filter": {
+         "unique":"'"$unique"'"
+      }
+    }' | jq -r '.[].id'
+  )
 
-elif [ "$responseStatus" -ne 201 ]
-    then
-        echo "ERROR: ${responseStatus}"
-        exit 1
-    else
-        echo "Task added"
-        echo "$responseStatus, $previous_tag"
+    echo "TASK ID: $findTaskID"
+
+    updateTask=$(curl -s -o dev/null -w '%{http_code}' -X PATCH https://api.tracker.yandex.net/v2/issues/$taskID \
+    --header "Content-Type: application/json" \
+    --header "Authorization: OAuth $OAuth" \
+    --header "X-Org-Id: $XOrgId" \
+    --data-raw '{
+        "summary":"'"$summary"'",
+        "description":"'"$description"'"
+    }')
+
+    if [ $updateTask -eq 200 ]; then
+      echo "Task updated"
+    elif [ $updateTask -eq 404 ]; then
+      echo "Task not found :("
+    else [ $updateTask -eq 409 ]
+      echo "Checkout the request"
+    fi
+  else
+    echo "ERROR: $updateTask"
 fi
