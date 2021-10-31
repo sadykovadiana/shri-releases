@@ -43,8 +43,9 @@ if [ "$responseStatus" -eq 409 ]
         --header "X-Org-Id: ${OrganisationID}" \
         --header "Content-Type: application/json" \
         --data-raw '{
-            "text": "'${log}, ${desc}'"
+                     "text": "Some test text",
         }')
+
         echo "Add comment with status $addComment"
 
         if [ "$addComment" -eq 201 ]
