@@ -4,7 +4,7 @@ cur_tag=$(git tag | tail -1 | head -n1)
 taskID="estasie/$cur_tag"
 
 
-testResult=$(npx jest 2>&1)
+testResult=$(npx jest 2>&1 |  tr "\r\n" " " )
 
   echo "$testResult"
 
