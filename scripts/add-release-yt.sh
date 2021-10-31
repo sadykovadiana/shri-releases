@@ -36,7 +36,7 @@ elif [ $responseStatus = 409 ]; then
   findTaskID=$(curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
     --header "Content-Type: application/json" \
     --header "Authorization: OAuth $OAuth" \
-    --header "X-Org-Id: $XOrgId" \
+    --header "X-Org-Id: $OrganizationId" \
     --data-raw '{
     "filter": {
          "unique":"'"$unique"'"
@@ -49,7 +49,7 @@ elif [ $responseStatus = 409 ]; then
     updateTask=$(curl -s -o dev/null -w '%{http_code}' -X PATCH https://api.tracker.yandex.net/v2/issues/$taskID \
     --header "Content-Type: application/json" \
     --header "Authorization: OAuth $OAuth" \
-    --header "X-Org-Id: $XOrgId" \
+    --header "X-Org-Id: $OrganizationId" \
     --data-raw '{
         "summary":"'"$summary"'",
         "description":"'"$description"'"
