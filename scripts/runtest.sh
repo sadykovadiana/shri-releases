@@ -10,7 +10,7 @@ testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " ")
 
   echo "$testResult"
 
-  findTaskID=$(curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
+  findTaskID=$(curl -s -X GET https://api.tracker.yandex.net/v2/issues/_search? \
     --header "Authorization: OAuth $OAuth" \
     --header "X-Org-Id: $OrganisationID" \
     --header "Content-Type: application/json" \
