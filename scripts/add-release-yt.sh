@@ -29,5 +29,5 @@ if [ "$responseStatus" -ne 201 ]
         echo "ERROR: ${responseStatus}"
     else
         echo "Task added"
-        echo "$cur_tag, $previous_tag , $getTaskId"
+        echo "$responseStatus, $previous_tag"
 fi
