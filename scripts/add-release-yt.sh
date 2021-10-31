@@ -23,13 +23,6 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "description": "'"${desc}"'",
     "taskID": "'"${taskID}"'"
 }')
-if [ "$responseStatus" -ne 201 ]
-    then
-        echo "ERROR: ${responseStatus}"
-    else
-        echo "Task added"
-        echo "$cur_tag, $previous_tag"
-fi
 
 getTaskId=$(curl --silent --location --request POST "https://api.tracker.yandex.net/v2/issues/_search" \
 --header "Authorization: OAuth ${OAuth}" \
@@ -65,4 +58,12 @@ then
         echo "SUCCSESS: ${taskKey} UPDATED"
     fi
 
+fi
+
+if [ "$responseStatus" -ne 201 ]
+    then
+        echo "ERROR: ${responseStatus}"
+    else
+        echo "Task added"
+        echo "$cur_tag, $previous_tag , $getTaskId"
 fi
