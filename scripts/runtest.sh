@@ -6,6 +6,8 @@ taskID="estasie/$cur_tag"
 
 testResult=$(npx jest 2>&1)
 
+  echo "$testResult"
+
   findTaskID=$(
     curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
     --header "Content-Type: application/json" \
@@ -27,6 +29,8 @@ testResult=$(npx jest 2>&1)
     --data-raw '{
         "text":"'"$testResult"'"
     }')
+
+    echo "$createNewComment"
 
     if [ $createNewComment = 201 ]; then
       echo "Added new comment TEST RESULT"
