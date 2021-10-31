@@ -19,7 +19,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "queue": "TMP",
     "summary": "'"${summary}"'",
     "type": "task",
-    "description": "'"${desc}"' '"${cur_tag}"'"
+    "description": "'"${desc}"'"
 }')
 
 
@@ -32,6 +32,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
         exit 1
     else
         echo "Task added"
+        echo "$cur_tag, $previous_tag"
         exit 0
     fi
 
