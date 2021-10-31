@@ -23,8 +23,22 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "description": "'"${desc}"'",
     "unique": "'"${taskID}"'"
 }')
+if [ "$responseStatus" -eq 409 ]
+    then
+        echo "Cannot create task with the same release version"
+        echo "Adding new comment then"
+        getIssueId=$(curl --write-out '%{http_code' --silent --output /dev/null --location --request POST ${serchURL} \
+        --header "Authorization: OAuth ${OAuth}" \
+        --header "X-Org-Id: ${OrganisationID}" \
+        --header "Content-Type: application/json" \
+        --data-raw '{
+                      "filter": {
+                        "unique": "'${taskID}'"
+                      },
+        }')
+        echo "$getIssueId"
 
-if [ "$responseStatus" -ne 201 ]
+elif [ "$responseStatus" -ne 201 ]
     then
         echo "ERROR: ${responseStatus}"
     else
