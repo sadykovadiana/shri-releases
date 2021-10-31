@@ -21,7 +21,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "summary": "'"${summary}"'",
     "type": "task",
     "description": "'"${desc}"'",
-    "taskID": "'"${taskID}"'"
+    "unique": "'"${taskID}"'"
 }')
 
 if [ "$responseStatus" -ne 201 ]
