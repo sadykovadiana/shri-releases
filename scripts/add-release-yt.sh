@@ -47,7 +47,7 @@ if [ "$responseStatus" -eq 409 ]
         }')
         echo "Add comment with status $addComment"
 
-        if [ "$addComment" -ne 201]
+        if [ "$addComment" -ne 201 ]
           then
             echo "ERROR: Cannot add comment, ended with error $addComment"
             exit 1
