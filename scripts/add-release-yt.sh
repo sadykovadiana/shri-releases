@@ -28,15 +28,17 @@ if [ "$responseStatus" -eq 409 ]
         echo "Cannot create task with the same release version"
         echo "Adding new comment then"
         searchURL="https://api.tracker.yandex.net/v2/issues/_search"
-        getIssueId=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${searchURL} \
-        --header "Authorization: OAuth ${OAuth}" \
-        --header "X-Org-Id: ${OrganisationID}" \
-        --header "Content-Type: application/json" \
-        --data-raw '{
-                      "filter": {
-                        "unique": "'${taskID}'"
-                      },
-        }')
+        getIssueId=$(curl --silent --location --request POST ${searchURL} \
+           --header "Authorization: OAuth ${OAuth}" \
+           --header "X-Org-Id: ${OrganizationId}" \
+           --header "Content-Type: application/json" \
+           --data-raw '{
+        "filter": {
+            "unique": "'"${taskID}"'"
+        }
+    }' | jq -r '.[0].key'
+)
+
         echo "Issue id: $getIssueId"
         commentURL="https://api.tracker.yandex.net/v2/issues/$getIssueId/comments"
         addComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${commentURL} \
