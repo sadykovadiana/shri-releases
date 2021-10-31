@@ -42,8 +42,8 @@ then
         --header "X-Org-Id: ${OrganizationId}" \
         --header "Content-Type: application/json" \
         --data-raw '{
-            "summary": "'"${summary}"'",
-            "description": "'"${desc}"'"
+            "summary": "some summary test",
+            "description": "and description"
         }'
     )
 
