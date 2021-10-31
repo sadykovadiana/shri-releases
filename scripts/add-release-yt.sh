@@ -47,15 +47,15 @@ if [ "$responseStatus" -eq 409 ]
         }')
         echo "Add comment with status $addComment"
 
-        if [ "$addComment" -ne 201 ]
+        if [ "$addComment" -eq 201 ]
           then
+            echo "SUCCESS: New comment added"
+          else
             echo "ERROR: Cannot add comment, ended with error $addComment"
             exit 1
-          else
-            echo "SUCCESS: New comment added"
         fi
-
-elif [ "$responseStatus" -ne 201 ]
+fi
+if [ "$responseStatus" -ne 201 ]
     then
         echo "ERROR: ${responseStatus}"
         exit 1
