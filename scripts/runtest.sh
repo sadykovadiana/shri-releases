@@ -4,7 +4,7 @@ cur_tag=$(git tag | tail -1 | head -n1)
 taskID="estasie/$cur_tag"
 
 
-testResult=$(npm run test 2>&1 | tr "\\\\\\\\" "/"| tr -s "\n" " ")
+testResult=$(npx jest 2>&1)
 
   findTaskID=$(
     curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
