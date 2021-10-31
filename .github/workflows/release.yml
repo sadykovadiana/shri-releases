@@ -15,3 +15,8 @@ jobs:
         env:
           OAuth: ${{ secrets.OAuth }}
           OrganizationId: ${{ secrets.OrganizationId }}
+      -name: Install dep-es
+        run: npm install
+      -name: Run tests
+        run: sh ./scripts/runtest.sh
+
