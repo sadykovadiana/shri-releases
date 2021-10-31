@@ -5,6 +5,7 @@ previous_tag=$(git tag | sort -r | head -2 | tail -1)
 cur_tag_author=$(git show ${cur_tag} | grep Author: )
 cur_tag_date=$(git show ${cur_tag} | grep Date:)
 log=`git log $previous_tag`
+desc=$(git log --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n" " ")
 
 summary="Version release'"${cur_tag}"'"
 description="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
@@ -18,7 +19,7 @@ responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --l
     "queue": "TMP",
     "summary": "'"${summary}"'",
     "type": "task",
-    "description": "desc"
+    "description": "'"${desc}"'"
 }')
 
 
