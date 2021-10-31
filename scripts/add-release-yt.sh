@@ -8,7 +8,6 @@ log=`git log $previous_tag`
 desc=$(git log --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n")
 
 summary="$cur_tag: Estasie App update"
-description="${cur_tag_author}:${cur_tag_date}:${cur_tag}"
 taskURL="https://api.tracker.yandex.net/v2/issues/"
 taskID="Unique/estasie/$cur_tag"
 
@@ -38,10 +37,26 @@ if [ "$responseStatus" -eq 409 ]
                       },
         }')
         echo "$getIssueId"
+        commentURL="https://api.tracker.yandex.net/v2/issues/${getIssueId}/comments"
+        addComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${searchURL} \
+        --header "Authorization: OAuth ${OAuth}" \
+        --header "X-Org-Id: ${OrganisationID}" \
+        --header "Content-Type: application/json" \
+        --data-raw '{
+            "text": "'${log}, ${desc}'"
+        }')
+        if [ "$addComment" -eq 201]
+          then
+            echo "SUCCESS: New comment added"
+          else
+            echo "ERROR: Cannot add comment, ended with error $addComment"
+            exit 1
+        fi
 
 elif [ "$responseStatus" -ne 201 ]
     then
         echo "ERROR: ${responseStatus}"
+        exit 1
     else
         echo "Task added"
         echo "$responseStatus, $previous_tag"
