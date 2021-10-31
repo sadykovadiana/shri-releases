@@ -45,14 +45,13 @@ elif [ $responseStatus = 409 ]; then
                 "unique": "'"${uniqueTag}"'"
               }
          }' | jq -r '.[0].key')
-echo "TASK ID: $findTaskID"
 
     echo "TASK ID: $findTaskID"
 
     updateTask=$(curl -s -o dev/null -w '%{http_code}' -X PATCH https://api.tracker.yandex.net/v2/issues/$taskID \
-    --header "Content-Type: application/json" \
-    --header "Authorization: OAuth $OAuth" \
-    --header "X-Org-Id: $OrganizationId" \
+    --header "${headerAuth}" \
+    --header "${headerOrgID}" \
+    --header "${contentType}" \
     --data-raw '{
         "summary":"'"$summary"'",
         "description":"'"$description"'"
@@ -63,7 +62,7 @@ echo "TASK ID: $findTaskID"
     elif [ $updateTask -eq 404 ]; then
       echo "Task not found :("
     else [ $updateTask -eq 409 ]
-      echo "Checkout your request request"
+      echo "Checkout your request $updateTask"
     fi
   else
     echo "ERROR: $updateTask"
