@@ -28,7 +28,7 @@ if [ "$responseStatus" -eq 409 ]
         echo "Cannot create task with the same release version"
         echo "Adding new comment then"
         searchURL="https://api.tracker.yandex.net/v2/issues/_search"
-        getIssueId=$(curl --write-out '%{http_code' --silent --output /dev/null --location --request POST ${searchURL} \
+        getIssueId=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${searchURL} \
         --header "Authorization: OAuth ${OAuth}" \
         --header "X-Org-Id: ${OrganisationID}" \
         --header "Content-Type: application/json" \
