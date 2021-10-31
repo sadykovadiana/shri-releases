@@ -12,7 +12,7 @@ contentType="Content-Type: application/json"
 
 testRes=$(npm run test 2>&1  | tr -s "\n" " ")
 
-findTask=$(curl --silent --location --request POST ${findExistingTask} \
+taskRequest=$(curl --silent --location --request POST ${findExistingTask} \
         --header "${headerAuth}" \
         --header "${headerOrgID}" \
         --header "${contentType}" \
@@ -21,9 +21,9 @@ findTask=$(curl --silent --location --request POST ${findExistingTask} \
                 "unique": "'"${uniqueTag}"'"
               }
          }' | jq -r '.[0].key')
-echo $findTask
+echo "TASK ID: $taskRequest"
 
-createCommentURL="https://api.tracker.yandex.net/v2/issues/${findTask}/comments"
+createCommentURL="https://api.tracker.yandex.net/v2/issues/${taskRequest}/comments"
 
 comment="Tests:\n${testRes}"
 

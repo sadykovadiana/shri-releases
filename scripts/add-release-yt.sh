@@ -1,6 +1,6 @@
 #! /usr/bin/bash
 
-cur_tag=$(git tag | tail -1 | head -n1)
+cur_tag=$(git tag | sort -r | head -n1)
 previous_tag=$(git tag | tail -2 | head -n1)
 cur_tag_author=$(git show $cur_tag  --pretty=format:"Author: %an" --date=format:'%Y-%m-%d %H:%M:%S' --no-patch)
 cur_tag_date=$(git show ${cur_tag} | grep Date:)
@@ -32,17 +32,19 @@ elif [ $responseStatus = 404 ]; then
 elif [ $responseStatus = 409 ]; then
    echo "Cannot create task with the same release version"
    echo "Adding new comment then"
-
-  findTaskID=$(curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
-    --header "Content-Type: application/json" \
-    --header "Authorization: OAuth $OAuth" \
-    --header "X-Org-Id: $OrganizationId" \
-    --data-raw '{
-    "filter": {
-         "unique":"'"$unique"'"
-      }
-    }' | jq -r '.[].id'
-  )
+  headerAuth="Authorization: OAuth ${OAuth}"
+  headerOrgID="X-Org-Id: ${OrganizationId}"
+  contentType="Content-Type: application/json"
+  findTaskID=$(curl --silent --location --request POST ${findExistingTask} \
+        --header "${headerAuth}" \
+        --header "${headerOrgID}" \
+        --header "${contentType}" \
+        --data-raw '{
+            "filter": {
+                "unique": "'"${uniqueTag}"'"
+              }
+         }' | jq -r '.[0].key')
+echo "TASK ID: $findTaskID"
 
     echo "TASK ID: $findTaskID"
 
