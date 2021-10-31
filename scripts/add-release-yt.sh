@@ -45,12 +45,14 @@ if [ "$responseStatus" -eq 409 ]
         --data-raw '{
             "text": "'${log}, ${desc}'"
         }')
-        if [ "$addComment" -eq 201]
+        echo "Add comment with status $addComment"
+
+        if [ "$addComment" -ne 201]
           then
-            echo "SUCCESS: New comment added"
-          else
             echo "ERROR: Cannot add comment, ended with error $addComment"
             exit 1
+          else
+            echo "SUCCESS: New comment added"
         fi
 
 elif [ "$responseStatus" -ne 201 ]
