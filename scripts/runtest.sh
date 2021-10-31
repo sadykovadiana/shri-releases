@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 cur_tag=$(git tag | tail -1 | head -n1)
-taskID="estasie/$previous_tag"
+taskID="estasie/$cur_tag"
 
 
 testResult=$(npm run test 2>&1 | tr "\\\\\\\\" "/"| tr -s "\n" " ")
