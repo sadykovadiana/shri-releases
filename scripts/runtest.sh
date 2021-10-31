@@ -5,15 +5,15 @@ taskID="estasie/$cur_tag"
 
 echo "$cur_tag"
 
-testResult=$(npx jest 2>&1 |  tr "\r\n" " " )
+testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " " )
 
   echo "$testResult"
 
   findTaskID=$(
     curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
-    --header "Content-Type: application/json" \
     --header "Authorization: OAuth $OAuth" \
     --header "X-Org-Id: $OrganisationID" \
+    --header "Content-Type: application/json" \
     --data-raw '{
     "filter": {
          "unique": "'$taskID'"
