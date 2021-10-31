@@ -5,12 +5,11 @@ taskID="estasie/$cur_tag"
 
 echo "$cur_tag"
 
-testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " " )
+testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " ")
 
   echo "$testResult"
 
-  findTaskID=$(
-    curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
+  findTaskID=$(curl -s -X POST https://api.tracker.yandex.net/v2/issues/_search? \
     --header "Authorization: OAuth $OAuth" \
     --header "X-Org-Id: $OrganisationID" \
     --header "Content-Type: application/json" \
@@ -21,9 +20,8 @@ testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " " )
     }' | jq -r '.[].id'
   )
 
-
-    createNewComment=$(
-    curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/${findTaskID}/comments \
+  echo "Find task id result: $findTaskID"
+    createNewComment=$(curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/${findTaskID}/comments \
     --header "Content-Type: application/json" \
     --header "Authorization: OAuth $OAuth" \
     --header "X-Org-Id: $OrganisationID" \
@@ -31,7 +29,7 @@ testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " " )
         "text":"'"$testResult"'"
     }')
 
-    echo "$createNewComment"
+    echo "Create new comment result: $createNewComment"
 
     if [ $createNewComment = 201 ]; then
       echo "Added new comment TEST RESULT"
