@@ -21,13 +21,13 @@ testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " ")
   )
 
   echo "Find task id result: $findTaskID"
-    createNewComment=$(curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/${findTaskID}/comments \
+  createNewComment=$(curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/${findTaskID}/comments \
     --header "Content-Type: application/json" \
     --header "Authorization: OAuth $OAuth" \
     --header "X-Org-Id: $OrganisationID" \
     --data-raw '{
-        "text":"'"$testResult"'"
-    }')
+        "text":"Test results"
+  }')
 
     echo "Create new comment result: $createNewComment"
 
