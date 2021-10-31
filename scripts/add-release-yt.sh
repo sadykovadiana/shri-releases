@@ -36,9 +36,9 @@ if [ "$responseStatus" -eq 409 ]
                         "unique": "'${taskID}'"
                       },
         }')
-        echo "$getIssueId"
+        echo "Issue id: $getIssueId"
         commentURL="https://api.tracker.yandex.net/v2/issues/${getIssueId}/comments"
-        addComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${searchURL} \
+        addComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${commentURL} \
         --header "Authorization: OAuth ${OAuth}" \
         --header "X-Org-Id: ${OrganisationID}" \
         --header "Content-Type: application/json" \
