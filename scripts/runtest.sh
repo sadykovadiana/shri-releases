@@ -23,7 +23,7 @@ testResult=$(npx jest 2>&1 |  tr "\r\n" " " )
 
 
     createNewComment=$(
-    curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/$taskID/comments \
+    curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/${findTaskID}/comments \
     --header "Content-Type: application/json" \
     --header "Authorization: OAuth $OAuth" \
     --header "X-Org-Id: $OrganisationID" \
