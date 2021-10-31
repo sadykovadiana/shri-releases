@@ -1,34 +1,40 @@
-#! /usr/bin/bash
+#!/usr/bin/env
 
-cur_tag=$(git tag | tail -1 | head -n1)
-taskID="estasie/$cur_tag"
+current_tag=$(git tag | sort -r | head -n1)
+uniqueTag="estasie/$current_tag"
+
+findExistingTask="https://api.tracker.yandex.net/v2/issues/_search"
 
 
-echo "$cur_tag"
+headerAuth="Authorization: OAuth ${OAuth}"
+headerOrgID="X-Org-Id: ${OrganizationId}"
+contentType="Content-Type: application/json"
 
-testResult=$(npx jest 2>&1 | tr -d ':' | tr "\r\n" " ")
+testRes=$(npm run test 2>&1  | tr -s "\n" " ")
 
-  echo "$testResult"
+findTask=$(curl --silent --location --request POST ${findExistingTask} \
+        --header "${headerAuth}" \
+        --header "${headerOrgID}" \
+        --header "${contentType}" \
+        --data-raw '{
+            "filter": {
+                "unique": "'"${uniqueTag}"'"
+              }
+         }' | jq -r '.[0].key')
+echo $findTask
 
-  findTaskID=$(curl -s -X GET https://api.tracker.yandex.net/v2/issues/_search \
-    --header "Authorization: OAuth $OAuth" \
-    --header "X-Org-Id: $OrganisationID" \
-    --header "Content-Type: application/json" \
-    --data-raw '{
-    "filter": {
-         "unique": "'$taskID'"
-      }
-    }' | jq -r '.[].id'
-  )
+createCommentURL="https://api.tracker.yandex.net/v2/issues/${findTask}/comments"
 
-  echo "Find task id result: $findTaskID"
-  createNewComment=$(curl  -s -o dev/null -w '%{http_code}' -X POST https://api.tracker.yandex.net/v2/issues/${findTaskID}/comments \
-    --header "Content-Type: application/json" \
-    --header "Authorization: OAuth $OAuth" \
-    --header "X-Org-Id: $OrganisationID" \
-    --data-raw '{
-        "text":"Test results"
-  }')
+comment="Tests:\n${testRes}"
+
+createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createCommentURL} \
+        --header "${headerAuth}" \
+        --header "${headerOrgID}" \
+        --header "${contentType}" \
+        --data-raw '{
+            "text": "'"${comment}"'"
+         }')
+echo $createComment
 
     echo "Create new comment result: $createNewComment"
 
