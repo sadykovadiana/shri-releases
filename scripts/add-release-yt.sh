@@ -9,8 +9,8 @@ desc=$(git log --pretty=format:"%h - %s (%an, %ar)\n" | tr -s "\n")
 
 summary="$cur_tag: Estasie App update"
 taskURL="https://api.tracker.yandex.net/v2/issues/"
-taskID="Unique/estasie/$cur_tag"
-
+taskID="estasie/$cur_tag"
+echo "$taskID"
 responseStatus=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${taskURL} \
 --header "Authorization: OAuth ${OAuth}" \
 --header "X-Org-Id: ${OrganizationId}" \
