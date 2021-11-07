@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 current_tag=$(git tag | sort -r | head -1)
-taskID="estasie/$cur_tag"
+taskID="estasie/$current_tag"
 
 findExistingTask="https://api.tracker.yandex.net/v2/issues/_search"
 
@@ -37,6 +37,7 @@ else
 
   createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createCommentUrl} \
         --header "${headerAuth}" \
+
         --header "${headerOrgID}" \
         --header "${contentType}" \
         --data-raw '{
