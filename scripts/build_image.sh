@@ -5,8 +5,8 @@ taskID="estasie/$cur_tag"
 
 findExistingTask="https://api.tracker.yandex.net/v2/issues/_search"
 
-authHeader="Authorization: OAuth ${OAuth}"
-orgHeader="X-Org-Id: ${OrganizationId}"
+headerAuth="Authorization: OAuth ${OAuth}"
+headerOrgID="X-Org-Id: ${OrganizationId}"
 contentType="Content-Type: application/json"
 
 imageName="store_app:${current_tag}"
@@ -25,29 +25,30 @@ else
         --header "${contentType}" \
         --data-raw '{
             "filter": {
-                "unique": "'"${uniqueTag}"'"
+                "unique": "'"${taskID}"'"
               }
          }' | jq -r '.[0].key')
-echo "TASK ID: $taskRequest"
+
+  echo "TASK ID: $taskRequest"
 
   createCommentUrl="https://api.tracker.yandex.net/v2/issues/${taskRequest}/comments"
 
   message="Docker image created: ${imageName}"
 
-createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createCommentURL} \
+  createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createCommentURL} \
         --header "${headerAuth}" \
         --header "${headerOrgID}" \
         --header "${contentType}" \
         --data-raw '{
             "text": "'"${message}"'"
          }')
-echo $createComment
-echo "Create new comment result: $createComment"
-  if [ "$createComment" -ne 201 ]
-  then
-    echo "ERROR: cannot create comment for ${taskKey}"
-    exit 1
-  else
-    echo ${message}
-  fi
+  echo $createComment
+  echo "Create new comment result: $createComment"
+    if [ "$createComment" -ne 201 ]
+    then
+     echo "ERROR: cannot create comment for ${taskKey}"
+      exit 1
+    else
+      echo ${message}
+    fi
 fi
