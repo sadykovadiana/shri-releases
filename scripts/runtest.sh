@@ -36,11 +36,11 @@ createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --lo
          }')
 echo $createComment
 
-    echo "Create new comment result: $createNewComment"
+    echo "Create new comment result: $createComment"
 
-    if [ $createNewComment = 201 ]; then
+    if [ $createComment = 201 ]; then
       echo "Added new comment TEST RESULT"
-    elif [ $createNewComment = 404 ]; then
+    elif [ $createComment = 404 ]; then
       echo "Cannot add new comment, task is not found"
     else
       echo "Checkout your request"
