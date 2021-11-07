@@ -24,3 +24,8 @@ jobs:
         env:
           OAuth: ${{ secrets.OAuth }}
           OrganizationId: ${{ secrets.OrganizationId }}
+      - name: build image
+        run: sh ./scripts/build_image.sh
+        env:
+          OAuth: ${{ secrets.OAuth  }}
+          OrganizationId: ${{ secrets.OrganizationId }}
