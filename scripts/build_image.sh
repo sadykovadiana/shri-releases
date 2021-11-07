@@ -35,7 +35,7 @@ else
 
   message="Docker image created: ${imageName}"
 
-  createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createCommentURL} \
+  createComment=$(curl --write-out '%{http_code}' --silent --output /dev/null --location --request POST ${createCommentUrl} \
         --header "${headerAuth}" \
         --header "${headerOrgID}" \
         --header "${contentType}" \
